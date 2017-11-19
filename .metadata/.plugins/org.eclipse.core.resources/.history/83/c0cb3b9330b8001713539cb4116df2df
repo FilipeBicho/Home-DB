@@ -1,0 +1,138 @@
+package home;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class HomeDB
+ */
+@WebServlet("/HomeDB")
+public class HomeDB extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
+	// Database URL
+	String url = "jdbc:mysql://localhost:3306/Home?useSSL=false";
+	// User name
+	String user = "Filipe";
+	// Password
+	String pass = "Popcorn00!";
+	
+	ArrayList<Bedroom> items = new ArrayList<Bedroom>();
+
+	//Variable to connect to database
+		Connection connection = null;
+		//Variable to create a statement
+		static Statement statement = null;
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public HomeDB() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//1. Set content type
+		response.setContentType("text/html");
+		
+		//2. Get the printWriter
+		PrintWriter out = response.getWriter();
+		
+		ArrayList<Bedroom> items = new ArrayList<Bedroom>();
+		
+		// Select all columns from bedroom table
+		String query = "Select * from Bedroom";
+		
+		try {
+			//1. Get a connection to database
+			 connection = DriverManager.getConnection(url, user, pass);
+			
+			//2. Create a Statement
+			statement = connection.createStatement();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//Create a Statement
+		try {
+			statement = connection.createStatement();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			
+			// The ResultSet object maintains a cursor pointing to its current row of data
+			ResultSet result = statement.executeQuery(query);
+
+			while(result.next())
+			{
+				items.add(new Bedroom(
+						result.getString("name"),
+						result.getString("store"), 
+						result.getFloat("price"),
+						result.getInt("quantity"),
+						result.getString("color")
+						));
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//3. Generate HTML content
+		out.println("<html><body>");
+		out.println("<h2 style=\"text-align:center;\"> Bedroom Database </h2>");
+		out.println("<table align=center border=1 >");
+		out.println("<tr>");
+			out.println("<th style= \" padding: 10px; \"> Name 		</th>");
+			out.println("<th style= \" padding: 10px; \"> Store 	</th>");
+			out.println("<th style= \" padding: 10px; \"> Price 	</th>");
+			out.println("<th style= \" padding: 10px; \"> Quantity 	</th>");
+			out.println("<th style= \" padding: 10px; \"> Color 	</th>");
+		out.println("</tr>");	
+		for(Bedroom item : items)
+		{
+			out.println("<tr>");
+			out.println("<td style= \" padding: 10px; \">" + item.getName() + "</td>");
+			out.println("<td style= \" padding: 10px; \">" + item.getStore() + "</td>");
+			out.println("<td style= \" padding: 10px; \">" + item.getPrice() + "</td>");
+			out.println("<td style= \" padding: 10px; \">" + item.getQuantity() + "</td>");
+			out.println("<td style= \" padding: 10px; \">" + item.getColor() + "</td>");
+			out.println("</tr>");
+		}
+			
+		
+		
+		out.println("</table");
+		
+		out.println("</body></html>");
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}

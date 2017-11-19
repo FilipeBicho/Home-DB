@@ -1,0 +1,89 @@
+package home;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.*;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class HomeDB
+ */
+@WebServlet("/HomeDB")
+public class HomeDB extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public HomeDB() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Database URL
+		String url = "jdbc:mysql://localhost:3306/Home?useSSL=false";
+		// User name
+		String user = "Filipe";
+		// Password
+		String pass = "Popcorn00!";
+		
+		// Select all columns from bedroom table
+		String query = "Select * from Bedroom";
+		
+		
+
+		try {
+			
+			Class.forName("org.postgresql.Driver");
+			//1. Get a connection to database
+			Connection connection = DriverManager.getConnection(url, user, pass);
+			//2. Create a Statement
+			Statement statement = connection.createStatement();
+			
+			// The ResultSet object maintains a cursor pointing to its current row of data
+			ResultSet result = statement.executeQuery(query);
+			
+			
+			
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		
+		//1. Set content type
+		response.setContentType("text/html");
+		
+		//2. Get the printWriter
+		PrintWriter out = response.getWriter();
+			
+		//3. Generate HTML content
+		out.println("<html><body>");
+		
+		out.println("</body></html>");
+		
+	
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}

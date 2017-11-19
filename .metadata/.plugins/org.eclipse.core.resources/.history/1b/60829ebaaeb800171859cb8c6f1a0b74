@@ -1,0 +1,27 @@
+<html>
+
+<head>
+
+	<title>Add new item</title>
+	
+</head>
+
+	<h2 style="text-align: center">Add new item</h2>
+	
+	<form action="addItem" method="GET">
+		
+		Name: <input type="text" name="name">
+		<br><br>
+		Store: <input type="text" name="store">
+		<br><br>
+		Price: <input type="text" name="price">
+		<br><br>
+		Quantity: <input type="text" name="qtd">
+		<br><br>
+		Color: <input type="text" name="color">
+		<br><br>
+		<input type="submit" value="add">
+	
+	</form>
+	
+</html>

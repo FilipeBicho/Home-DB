@@ -1,0 +1,64 @@
+package home;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class HomeDB
+ */
+@WebServlet("/HomeDB")
+public class HomeDB extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
+	Bedroom item = new Bedroom("bed","home",0.0f,1,"white");
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public HomeDB() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//1. Set content type
+		response.setContentType("text/html");
+		
+		//2. Get the printWriter
+		PrintWriter out = response.getWriter();
+		
+		//3. Generate HTML content
+		out.println("<html><body>");
+		out.println("<table align=\"center\"");
+		out.println("<tr><hr> Bedroom Database </hr><td>");
+		out.println("<tr>");
+		out.println("<td>" + item.getName() + "</td>");
+		out.println("<td>" + item.getStore() + "</td>");
+		out.println("<td>" + item.getPrice() + "</td>");
+		out.println("<td>" + item.getQuantity() + "</td>");
+		out.println("<td>" + item.getColor() + "</td>");
+		out.println("<\tr>");
+		out.println("<\table align=\"center\"");
+		out.println("<hr>");
+		out.println("Current time is " + new java.util.Date());
+		out.println("</body></html>");
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
